@@ -87,6 +87,21 @@ public class ExperienceLevelController : MonoBehaviour
             weaponToUpgrade.Add(availableWeapons[selected]);
             availableWeapons.RemoveAt(selected);
         }
+        if (PlayerController.instance.assignedWeapon.Count < PlayerController.instance.maxWeapon)
+        {
+            availableWeapons.AddRange(PlayerController.instance.assignedWeapon);
+        }       
+
+        for (int i = weaponToUpgrade.Count; i < 3; i++)
+        {
+            if (availableWeapons.Count < 0)
+            {
+                int selected = Random.Range(0, availableWeapons.Count);
+                weaponToUpgrade.Add(availableWeapons[selected]);
+                availableWeapons.RemoveAt(selected);
+            }
+        }
+
         for (int i = 0; i < weaponToUpgrade.Count; i++)
         {
             UIController.Instance.levelUpButtons[i].UpdateButtonDisplay(weaponToUpgrade[i]);
