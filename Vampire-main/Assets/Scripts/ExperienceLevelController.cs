@@ -18,6 +18,8 @@ public class ExperienceLevelController : MonoBehaviour
     public List<int> expLevels;
     public int currentLevel = 1, levelCount = 100;
 
+    public List<Weapon> weaponToUpgrade;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -59,6 +61,35 @@ public class ExperienceLevelController : MonoBehaviour
         if (currentLevel >= expLevels.Count)
         {
             currentLevel = expLevels.Count - 1;
+        }
+
+        //PlayerController.instance.activeWeapon.LevelUp();
+
+        UIController.Instance.levelUpPanel.SetActive(true);
+
+        Time.timeScale = 0f;
+
+        //UIController.Instance.levelUpButtons[1].UpdateButtonDisplay(PlayerController.instance.activeWeapon);
+
+        //UIController.Instance.levelUpButtons[0].UpdateButtonDisplay(PlayerController.instance.assignedWeapon[0]);
+
+        //UIController.Instance.levelUpButtons[1].UpdateButtonDisplay(PlayerController.instance.unassignedWeapons[0]);
+        //UIController.Instance.levelUpButtons[2].UpdateButtonDisplay(PlayerController.instance.unassignedWeapons[1]);
+
+        weaponToUpgrade.Clear();
+
+        List<Weapon> availableWeapons = new List<Weapon> ();
+        availableWeapons.AddRange(PlayerController.instance.assignedWeapon);
+
+        if (availableWeapons.Count < 0)
+        {
+            int selected = Random.Range(0, availableWeapons.Count);
+            weaponToUpgrade.Add(availableWeapons[selected]);
+            availableWeapons.RemoveAt(selected);
+        }
+        for (int i = 0; i < weaponToUpgrade.Count; i++)
+        {
+            UIController.Instance.levelUpButtons[i].UpdateButtonDisplay(weaponToUpgrade[i]);
         }
     }
 }

@@ -5,15 +5,27 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
+    private void Awake()
+    {
+        instance = this;
+    }
+
     public float moveSpeed;
     public Animator anim;
 
     public float pickupRange = 1.5f;
 
+    //public Weapon activeWeapon;
+
+    public List<Weapon> unassignedWeapons, assignedWeapon;
+
+    public int maxWeapon = 3;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        AddWeapon(Random.Range(0, unassignedWeapons.Count));
     }
 
     // Update is called once per frame
@@ -34,5 +46,24 @@ public class PlayerController : MonoBehaviour
         {
             anim.SetBool("IsMoving", false);
         }
+    }
+
+    public void AddWeapon(int weaponNumber)
+    {
+        if(weaponNumber < unassignedWeapons.Count)
+        {
+            assignedWeapon.Add(unassignedWeapons[weaponNumber]);
+
+            unassignedWeapons[weaponNumber].gameObject.SetActive(true);
+            unassignedWeapons.RemoveAt(weaponNumber);
+        }
+    }
+
+    public void AddWeapon(Weapon weaponToAdd)
+    {
+        weaponToAdd.gameObject.SetActive(true);
+
+        assignedWeapon.Add(weaponToAdd);
+        unassignedWeapons.Remove(weaponToAdd);
     }
 }
